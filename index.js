@@ -49,17 +49,17 @@ const app = async (ctx = 'hello') => {
   let result = []
   qustion.forEach((item, index) => {
     const ticket =
+      /У-\d*/.exec(item) ||
       /ПТЭ\d*/.exec(item) ||
       /Э-\d*/.exec(item) ||
       /М\d*/.exec(item) ||
-      /У-\d*/.exec(item) ||
       /ТРА\d*/.exec(item) ||
       /П-\d*/.exec(item)
     if (ticket == ctx.toUpperCase().trim()) {
       result.push(`${answer[index]}`)
     }
   })
-  if (result.length > 0) {
+  if (result.length > 1) {
     return result
   } else {
     result.push('я не нашел информацию')
@@ -69,7 +69,7 @@ const app = async (ctx = 'hello') => {
 
 async function start() {
   bot.start(async (ctx) => await ctx.reply('привет!'))
-  bot.help((ctx)=> ctx.reply('отправь боту номер вопроса'))
+  bot.help((ctx) => ctx.reply('отправь боту номер вопроса'))
   bot.on('text', async (ctx) => {
     const answer = await app(ctx.message.text)
     await ctx.reply(...answer)
